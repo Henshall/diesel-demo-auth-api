@@ -23,12 +23,10 @@ class QuoteController extends Controller
         //validation
         if (!$data["quote"]) {
             return "no quote exists - please include 'quote' param in request";
+        } else {
+            // NOTE QUOTE DATA DOES NOT PERSIST, JUST RETURNS QUOTE.
+            return "QUOTE CREATED " . json_encode([11 => $data["quote"]]);
         }
-        // add to quotes array
-        $quotes = array_merge(config("quotes"), [$data["quote"]]);
-        // return array
-        // NOTE THIS WILL NOT PERSIST IN QUOTES CONFIG FILE
-        return $quotes;
     }
     
 }
