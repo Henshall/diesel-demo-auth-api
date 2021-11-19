@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use JWTAuth;
 
 class QuoteController extends Controller
 {
@@ -18,8 +19,13 @@ class QuoteController extends Controller
     
     public function store(Request $request)
     {
-        //get data
+        
         $data = $request->all();
+    
+        $user = JWTAuth::parseToken($request->bearerToken())->authenticate();
+        var_dump($user);
+        die();
+        
         //validation
         if (!$data["quote"]) {
             return "no quote exists - please include 'quote' param in request";
