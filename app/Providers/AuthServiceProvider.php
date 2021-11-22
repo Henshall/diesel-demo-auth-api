@@ -25,8 +25,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         
-        \Auth::viaRequest('custom-token', function ($request) {
-            return [];
-        });
+      //   // $this->app['auth']->provider('auth-provider',  
+      //   // function ($app, array $config) {
+      //   //     return new CustomUserProvider();
+      //   // });
+      // 
+      //   Auth::provider('CustomUserProvider', function ($app, array $config) {
+      //     // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+      // 
+      //     return new CustomUserProvider($app->make('CustomUserProvider'));
+      // });
     }
 }
