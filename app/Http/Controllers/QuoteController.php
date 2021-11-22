@@ -13,12 +13,22 @@ class QuoteController extends Controller
     
     public function show($id)
     {
+        
         return config("quotes.$id");
     }
     
     public function store(Request $request)
     {
-        $data = $request->all();        
+        // GET USER OBJECT
+        $user = $request->user();
+        // DUMP USER OBJECT
+        var_dump($user);
+        // THROW ERROF IF IT DOESNT EXIST
+        if (!$user) {
+            throw new \Exception("USER NOT AUTHENTICATED", 1);
+        }
+        // GET ALL PARAMS
+        $data = $request->all(); 
         //validation
         if (!$data["quote"]) {
             return "no quote exists - please include 'quote' param in request";

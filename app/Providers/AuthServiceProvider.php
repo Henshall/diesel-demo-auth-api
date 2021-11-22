@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,15 +30,15 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         
-      //   // $this->app['auth']->provider('auth-provider',  
-      //   // function ($app, array $config) {
-      //   //     return new CustomUserProvider();
-      //   // });
-      // 
-      //   Auth::provider('CustomUserProvider', function ($app, array $config) {
-      //     // Return an instance of Illuminate\Contracts\Auth\UserProvider...
-      // 
-      //     return new CustomUserProvider($app->make('CustomUserProvider'));
-      // });
+        Auth::viaRequest('jwt', function (Request $request) {
+            // SET TOKEN AND SECRET KEY
+            $jwtClientToken = $request->bearerToken();
+            $jwtSecretKey = new Key(config("jwt.secret"), 'HS256');
+            // DECODE USER
+            $jwtUser = JWT::decode($jwtClientToken, $jwtSecretKey);
+            // HYDRATE USER MODEL
+            $user = new User;
+            return $user->fill( (array) $jwtUser);
+        });
     }
 }

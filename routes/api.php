@@ -17,7 +17,7 @@ use App\Http\Controllers\QuoteController;
 
 
 Route::get('quotes', 'App\Http\Controllers\QuoteController@index');
-Route::get('quotes/{id?}', 'App\Http\Controllers\QuoteController@show');
-Route::post('quotes', 'App\Http\Controllers\QuoteController@store')->middleware("JwtAuth");
+Route::get('quotes/{id?}', 'App\Http\Controllers\QuoteController@show')->middleware("JwtAuth");
+Route::post('quotes', 'App\Http\Controllers\QuoteController@store')->middleware("auth:api");
 
 
