@@ -20,6 +20,9 @@ class JwtAuth
     {
         // SET TOKEN AND SECRET KEY
         $jwtClientToken = $request->bearerToken();
+        if (!$jwtClientToken) {
+            throw new \Exception("NO JWT TOKEN GIVEN", 1);
+        }
         $jwtSecretKey = new Key(config("jwt.secret"), 'HS256');
         // DECODE USER
         $user = JWT::decode($jwtClientToken, $jwtSecretKey);
