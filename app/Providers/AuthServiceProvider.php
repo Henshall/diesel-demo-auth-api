@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
+use App\Classes\JwtDecoder;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -31,14 +30,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
         
         Auth::viaRequest('jwt', function (Request $request) {
-            // SET TOKEN AND SECRET KEY
-            $jwtClientToken = $request->bearerToken();
-            $jwtSecretKey = new Key(config("jwt.secret"), 'HS256');
-            // DECODE USER
-            $jwtUser = JWT::decode($jwtClientToken, $jwtSecretKey);
+            // ASSIGN JWT TOKEN
+            $jwt = $request->bearerToken();
+            // DECODE JWT USER OBJECT FROM REQUEST
+            $jwtUser = JwtDecoder::decode($jwt);
             // HYDRATE USER MODEL
             $user = new User;
-            return $user->fill( (array) $jwtUser);
+            $user->fill( (array) $jwtUser);
+            // RETURN HYDRATED MODEL
+            return $user; 
         });
     }
 }

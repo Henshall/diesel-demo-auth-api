@@ -10,6 +10,17 @@
  */
 
 return [
+    
+    
+    "jwk" => [
+        "kty" => "RSA",
+        "kid" => env("JWK_KID"),
+        "use" => "sig",
+        "alg" => "RS256",
+        "e" => "AQAB",
+        "n" => env("JWK_N")
+    ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -298,6 +309,10 @@ return [
         */
 
         'storage' => Tymon\JWTAuth\Providers\Storage\Illuminate::class,
+        
+        
+        
+        
 
     ],
 
