@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QuoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::get('quotes', 'App\Http\Controllers\QuoteController@index');
+Route::get('quotes/{id?}', 'App\Http\Controllers\QuoteController@show')->middleware("JwtAuth");
+Route::post('quotes', 'App\Http\Controllers\QuoteController@store')->middleware("auth:api");
+
+
